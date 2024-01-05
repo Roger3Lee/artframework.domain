@@ -5,14 +5,5 @@ import com.artframework.sample.entities.*;
 import mo.gov.dsaj.domain.core.repository.*;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
-import java.util.List;
-
-public interface UserRepository extends BaseRepository<UserDomain, UserInfoDO> {
-
-    /**
-    * 分页查询
-    * @param request 请求体
-    * @return 返回数据
-    */
-    IPage<UserDomain> page(UserPageDomain request);
+public interface UserAddressRepository extends BaseRepository<UserDomain.UserAddressDomain, UserAddressDO> {
 }

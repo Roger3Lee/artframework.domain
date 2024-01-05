@@ -34,7 +34,26 @@ public class GlobalSetting {
     }
 
     public List<TableMetaInfo> getTableList() {
-        return new ArrayList<>(tableMetaInfoMap.values());
+        if (INSTANCE.getDomainList().size()>0) {
+            List<TableMetaInfo> tableMetaInfos = new ArrayList<>();
+            for (DomainMetaInfo domainMetaInfo : INSTANCE.getDomainList()) {
+                if (INSTANCE.tableMetaInfoMap.containsKey(domainMetaInfo.getMainTable())) {
+                    tableMetaInfos.add(INSTANCE.tableMetaInfoMap.get(domainMetaInfo.getMainTable()));
+                }
+                if (null != domainMetaInfo.getAggregate() && INSTANCE.tableMetaInfoMap.containsKey(domainMetaInfo.getAggregate().getTable())) {
+                    tableMetaInfos.add(INSTANCE.tableMetaInfoMap.get(domainMetaInfo.getAggregate().getTable()));
+                }
+
+                domainMetaInfo.getRelatedList().forEach(x -> {
+                    if (INSTANCE.tableMetaInfoMap.containsKey(x.getTable())) {
+                        tableMetaInfos.add(INSTANCE.tableMetaInfoMap.get(x.getTable()));
+                    }
+                });
+            }
+            return tableMetaInfos;
+        }else{
+            return new ArrayList<>(INSTANCE.tableMetaInfoMap.values());
+        }
     }
 
     public List<ColumnMetaInfo> getTableColumns(String tableName) {
@@ -90,7 +109,14 @@ public class GlobalSetting {
         TableMetaInfo table = new TableMetaInfo();
         table.setName(tableInfo.getName());
         List<ColumnMetaInfo> columnMetaInfos = new ArrayList<>();
+
+        Set<String> colset=new HashSet<>();
         for (TableField tableField : tableInfo.getFields()) {
+            if(colset.contains(tableField.getName())){
+                continue;
+            }else{
+                colset.add(tableField.getName());
+            }
             ColumnMetaInfo column = new ColumnMetaInfo();
             column.setKey(tableField.isKeyFlag());
             column.setComment(tableField.getComment());

@@ -16,9 +16,9 @@ public abstract class AbstractGenerator {
     @Setter
     protected String templateFilePath;
 
-    private Map<String,String> params=new HashMap();
+    private Map<String,Object> params=new HashMap();
 
-    public void putParam(String key, String value) {
+    public void putParam(String key, Object value) {
         this.params.put(key, value);
     }
     public void putParam(Map<String,String> params) {

@@ -1,8 +1,12 @@
-package ${domainPackage!''}.${NameUtils.packageName(source.name)}.service;
+package ${domainPackage!''}.${NameUtils.packageName(source.folder)}.service;
 
-import ${domainPackage!''}.${NameUtils.packageName(source.name)}.domain.*;
+import ${domainPackage!''}.${NameUtils.packageName(source.folder)}.domain.*;
+
+import mo.gov.dsaj.domain.core.domain.*;
 import mo.gov.dsaj.domain.core.service.*;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+
+import java.util.List;
 
 <#assign serviceClassName=NameUtils.serviceName(source.name)/>
 <#assign domainName=NameUtils.getName(source.name)/>
@@ -52,4 +56,11 @@ public interface ${serviceClassName} extends BaseDomainService {
     * @return 成功OR失败
     */
     Boolean delete(${source.mainTable.keyType} key);
+
+    /**
+     *
+     * @param filters
+     * @return
+     */
+    Boolean deleteRelated(List<BaseLoadFlag.Filter> filters);
 }

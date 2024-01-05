@@ -1,15 +1,13 @@
-package ${domainPackage!''}.${NameUtils.packageName(source.name)}.domain;
+package ${domainPackage!''}.${NameUtils.packageName(source.folder)}.domain;
 
 import mo.gov.dsaj.domain.core.domain.*;
 <#if source.aggregate??>
 import com.fasterxml.jackson.annotation.JsonIgnore;
 </#if>
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 
 /**
@@ -21,6 +19,7 @@ import java.util.Map;
 @Getter
 @Setter
 @ToString
+@ApiModel(value = "${source.description}")
 <#assign className=NameUtils.dataTOName(source.name)/>
 <#assign relateDtoClassName=NameUtils.dataTOName(relateTable.name)/>
 public class ${className} extends BaseDomain {
@@ -29,6 +28,7 @@ public class ${className} extends BaseDomain {
     /**
     * ${column.comment}
     */
+    @ApiModelProperty(value =  "${column.comment}")
     private ${column.type} ${NameUtils.getFieldName(column.name)};
     </#list>
 
@@ -41,6 +41,7 @@ public class ${className} extends BaseDomain {
     /**
     * RELATE ${relateTable.name}
     */
+    @ApiModelProperty(value =  "RELATE ${relateTable.name}")
     private <#if relateTable.many>java.util.List<${relateDtoClassName}> ${fieldNameList};<#else>${relateDtoClassName} ${fieldName};</#if>
     </#list>
 
@@ -52,12 +53,14 @@ public class ${className} extends BaseDomain {
     * aggregate ${source.aggregate.name} ,不需要序列化給接口輸出
     */
     @JsonIgnore
+    @ApiModelProperty(value =  "aggregate ${source.aggregate.name} ,不需要序列化給接口輸出")
     private ${relateDtoClassName} ${fieldName};
     </#if>
 
     /**
-    * 加载数据对象
+    * 加载数据標識類
     */
+    @ApiModelProperty(value =  "加载数据標識類")
     private LoadFlag loadFlag;
 
 <#--    关联实体类-->
@@ -66,16 +69,15 @@ public class ${className} extends BaseDomain {
     @Getter
     @Setter
     @ToString
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
     public static class ${relateClassName} extends BaseDomain{
-        /**
-        * 是否有变化
-        */
-        private Boolean changed = false;
-
     <#list relateTable.column as column>
         /**
         * ${column.comment}
         */
+        @ApiModelProperty(value =  "${column.comment}")
         private ${column.type} ${NameUtils.getFieldName(column.name)};
     </#list>
     }
@@ -87,11 +89,15 @@ public class ${className} extends BaseDomain {
     @Getter
     @Setter
     @ToString
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
     public static class ${relateClassName} extends BaseDomain{
     <#list source.aggregate.column as column>
         /**
         * ${column.comment}
         */
+        @ApiModelProperty(value =  "${column.comment}")
         private ${column.type} ${NameUtils.getFieldName(column.name)};
     </#list>
     }
@@ -100,13 +106,22 @@ public class ${className} extends BaseDomain {
     @Getter
     @Setter
     @ToString
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
     public static class LoadFlag extends BaseLoadFlag{
+        /**
+        * 加載所有數據， 謹慎使用
+        */
+        @ApiModelProperty(value =  "加載所有數據， 謹慎使用")
+        private Boolean loadAll;
     <#list source.relatedTable as relateTable>
 
         /**
-        *
+        * 加載${NameUtils.dataTOName(relateTable.name)}
         */
-        private Boolean ${NameUtils.getFieldWithPrefix(relateTable.name,"load")} = false;
+        @ApiModelProperty(value =  "加載${NameUtils.dataTOName(relateTable.name)}")
+        private Boolean ${NameUtils.getFieldWithPrefix(relateTable.name,"load")};
     </#list>
     }
 </#if>

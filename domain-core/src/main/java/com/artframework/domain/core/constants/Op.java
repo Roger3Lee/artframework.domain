@@ -7,8 +7,6 @@ import com.baomidou.mybatisplus.core.toolkit.StringPool;
  * @version V1.0
  * @date 2023/12/18
  **/
-
-
 public enum Op {
     IN("IN"),
     NOT_IN("NOTIN"),
@@ -20,6 +18,11 @@ public enum Op {
     GE(">="),
     LT(StringPool.LEFT_CHEV),
     LE("<="),
+
+    /**
+     * 不過濾任何數據
+     */
+    NIL("NIL"),
     ;
 
     private String code;

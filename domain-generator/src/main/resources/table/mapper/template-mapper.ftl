@@ -1,6 +1,7 @@
 package ${mapperPackage!''};
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import mo.gov.dsaj.parent.core.mybatis.CustomBaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 import ${tablePackage!''}.*;
 
@@ -10,5 +11,6 @@ import ${tablePackage!''}.*;
 * @author auto
 * @version v1.0
 */
-public interface ${NameUtils.mapperName(source.name)} extends BaseMapper<${NameUtils.dataObjectName(source.name)}> {
+@Mapper
+public interface ${NameUtils.mapperName(source.name)} extends CustomBaseMapper<${NameUtils.dataObjectName(source.name)}> {
 }

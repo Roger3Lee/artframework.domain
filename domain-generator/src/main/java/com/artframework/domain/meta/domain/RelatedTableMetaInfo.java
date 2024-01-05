@@ -12,6 +12,12 @@ public class RelatedTableMetaInfo {
     private String table;
     private Boolean many=false  ;
     private String fk;
+    private String implement;
+
+    @XmlAttribute(name = "implement")
+    public void setImplement(String implement) {
+        this.implement = implement;
+    }
 
     @XmlAttribute(name = "table")
     public void setTable(String table) {

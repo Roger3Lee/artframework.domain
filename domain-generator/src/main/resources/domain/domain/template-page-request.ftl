@@ -1,4 +1,4 @@
-package ${domainPackage!''}.${NameUtils.packageName(source.name)}.domain;
+package ${domainPackage!''}.${NameUtils.packageName(source.folder)}.domain;
 
 import mo.gov.dsaj.domain.core.domain.*;
 import lombok.Getter;

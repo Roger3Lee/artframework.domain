@@ -1,6 +1,7 @@
 package com.artframework.sample.mappers;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import mo.gov.dsaj.parent.core.mybatis.CustomBaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 import com.artframework.sample.entities.*;
 
@@ -10,5 +11,6 @@ import com.artframework.sample.entities.*;
 * @author auto
 * @version v1.0
 */
-public interface UserInfoMapper extends BaseMapper<UserInfoDO> {
+@Mapper
+public interface UserInfoMapper extends CustomBaseMapper<UserInfoDO> {
 }

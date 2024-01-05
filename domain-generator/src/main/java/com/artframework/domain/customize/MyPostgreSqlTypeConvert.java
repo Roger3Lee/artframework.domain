@@ -1,4 +1,4 @@
-package com.artframework.domain.typeconverts;
+package com.artframework.domain.customize;
 
 import com.baomidou.mybatisplus.generator.config.GlobalConfig;
 import com.baomidou.mybatisplus.generator.config.ITypeConvert;
@@ -8,10 +8,13 @@ import com.baomidou.mybatisplus.generator.config.converts.select.Selector;
 import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.IColumnType;
 
+import java.util.regex.Pattern;
+
 import static com.baomidou.mybatisplus.generator.config.rules.DbColumnType.*;
 import static com.baomidou.mybatisplus.generator.config.rules.DbColumnType.STRING;
 
 public class MyPostgreSqlTypeConvert implements ITypeConvert {
+
     public static final PostgreSqlTypeConvert INSTANCE = new PostgreSqlTypeConvert();
 
     /**
@@ -19,13 +22,15 @@ public class MyPostgreSqlTypeConvert implements ITypeConvert {
      */
     @Override
     public IColumnType processTypeConvert(GlobalConfig config, String fieldType) {
+        //System.out.println(fieldType);
         return MyPostgreSqlTypeConvert.use(fieldType)
                 .test(containsAny("char", "text", "json", "enum").then(STRING))
-                .test(contains("bigint").then(LONG))
+                .test(pattern("^numeric\\(\\d+,0\\)$").then(LONG))
+                .test(containsAny("bigint").then(LONG))
                 .test(contains("int").then(INTEGER))
                 .test(containsAny("date", "time").then(t -> toDateType(config, t)))
                 .test(contains("bit").then(BOOLEAN))
-                .test(containsAny("decimal", "numeric").then(BIG_DECIMAL))
+                .test(containsAny("decimal").then(BIG_DECIMAL))
                 .test(contains("bytea").then(BYTE_ARRAY))
                 .test(contains("float").then(FLOAT))
                 .test(contains("double").then(DOUBLE))
@@ -93,6 +98,12 @@ public class MyPostgreSqlTypeConvert implements ITypeConvert {
                 if (s.contains(value)) return true;
             }
             return false;
+        });
+    }
+    static BranchBuilder<String, IColumnType> pattern(CharSequence value) {
+        return BranchBuilder.of(s -> {
+            final boolean matches = Pattern.matches(value.toString(), s);
+            return matches;
         });
     }
 }

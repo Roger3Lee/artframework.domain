@@ -2,8 +2,8 @@ package ${domainPackage!''}.${NameUtils.packageName(source.folder)}.service;
 
 import ${domainPackage!''}.${NameUtils.packageName(source.folder)}.domain.*;
 
-import mo.gov.dsaj.domain.core.domain.*;
-import mo.gov.dsaj.domain.core.service.*;
+import ${corePackage}.domain.*;
+import ${corePackage}.service.*;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import java.util.List;

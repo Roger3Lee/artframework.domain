@@ -7,9 +7,6 @@ import ${domainPackage!''}.${NameUtils.packageName(source.folder)}.repository.*;
 import ${tablePackage!''}.*;
 import mo.gov.dsaj.domain.core.repository.impl.*;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.stereotype.Repository;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 
@@ -40,6 +37,11 @@ public class ${relateRepositoryImplClassName} extends BaseRepositoryImpl<${relat
     @Override
     public List<${relateDTOClassName}> convert2DTO(List<${relateDOClassName}> list) {
         return ${covertName}.INSTANCE.convert2${relateName}DTO(list);
+    }
+
+    @Override
+    public void convert2DTO(${relateDOClassName} item ,${relateDTOClassName} targetItem){
+        ${covertName}.INSTANCE.convert2${relateName}DTO(item,targetItem);
     }
 
     @Override

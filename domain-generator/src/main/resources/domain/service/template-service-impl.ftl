@@ -81,20 +81,32 @@ public class ${serviceImplClassName} extends BaseDomainServiceImpl implements ${
         return ${repositoryName}.page(request);
     }
 
-    /**
+   /**
     * 查找
     * @param request 请求体
     * @return
     */
     @Override
     public ${dtoClassName} find(${domainName}FindDomain request){
+        return find(request, null);
+    }
+
+    /**
+    * 查找
+    * @param request 请求体
+    * @return
+    */
+    @Override
+    public ${dtoClassName} find(${domainName}FindDomain request, ${dtoClassName} response){
 <#if source.aggregate??>
-    return this.find(request,true);
+    return this.find(request, response, true);
 <#else>
 <#if (source.relatedTable?size>0)>
-        ${dtoClassName} response = ${repositoryName}.query(request.getKey(), ${lambdaClassName}.doKeyLambda);
         if(ObjectUtil.isNull(response)){
-            return response;
+            response = ${repositoryName}.query(request.getKey(), ${lambdaClassName}.doKeyLambda);
+            if(ObjectUtil.isNull(response)){
+                return response;
+            }
         }
 
         if (ObjectUtil.isNotNull(request.getLoadFlag())) {
@@ -110,12 +122,14 @@ public class ${serviceImplClassName} extends BaseDomainServiceImpl implements ${
                 <#assign relatedDtoClassName=NameUtils.dataTOName(relateTable.name)/>
             if(BooleanUtil.isTrue(request.getLoadFlag().getLoadAll()) || BooleanUtil.isTrue(request.getLoadFlag().${loadProperty}())){
                 Serializable key = ${lambdaClassName}.${relatesourceLambda}.apply(response);
-                <#if relateTable.many>
-                response.${setRelatedPropertyList}(${NameUtils.getFieldName(relateRepositoryClassName)}.queryList(key, ${lambdaClassName}.${relatetargetLambda},
-                                FiltersUtils.getEntityFilters(request.getLoadFlag().getFilters(), ${dtoClassName}.${relatedDtoClassName}.class)));
-                <#else>
-                response.${setRelatedProperty}(${NameUtils.getFieldName(relateRepositoryClassName)}.query(key, ${lambdaClassName}.${relatetargetLambda}));
-                </#if>
+                if(ObjectUtil.isNotNull(key)){
+                    <#if relateTable.many>
+                    response.${setRelatedPropertyList}(${NameUtils.getFieldName(relateRepositoryClassName)}.queryList(key, ${lambdaClassName}.${relatetargetLambda},
+                                    FiltersUtils.getEntityFilters(request.getLoadFlag().getFilters(), ${dtoClassName}.${relatedDtoClassName}.class)));
+                    <#else>
+                    response.${setRelatedProperty}(${NameUtils.getFieldName(relateRepositoryClassName)}.query(key, ${lambdaClassName}.${relatetargetLambda}));
+                    </#if>
+                }
             }
             </#list>
         }
@@ -134,7 +148,7 @@ public class ${serviceImplClassName} extends BaseDomainServiceImpl implements ${
      * @return
      */
     @Override
-    public ${dtoClassName} find(${domainName}FindDomain request, Boolean loadAggregate){
+    public ${dtoClassName} find(${domainName}FindDomain request, ${dtoClassName} domain, Boolean loadAggregate){
         ${dtoClassName} response = ${repositoryName}.query(request.getKey(), ${lambdaClassName}.doKeyLambda);
         if(ObjectUtil.isNull(response)){
             return response;
@@ -153,12 +167,14 @@ public class ${serviceImplClassName} extends BaseDomainServiceImpl implements ${
                 <#assign setRelatedPropertyList=NameUtils.genListSetter(relateTable.name)/>
             if(BooleanUtil.isTrue(request.getLoadFlag().getLoadAll()) || BooleanUtil.isTrue(request.getLoadFlag().${loadProperty}())){
                 Serializable key = ${lambdaClassName}.${relatesourceLambda}.apply(response);
-                <#if relateTable.many>
-                response.${setRelatedPropertyList}(${NameUtils.getFieldName(relateRepositoryClassName)}.queryList(key, ${lambdaClassName}.${relatetargetLambda},
-                                LoadFiltersUtils.getEntityFilters(request.getLoadFlag().getFilters(),"${relateName}")));
-                <#else>
-                response.${setRelatedProperty}(${NameUtils.getFieldName(relateRepositoryClassName)}.query(key, ${lambdaClassName}.${relatetargetLambda}));
-                </#if>
+                if(ObjectUtil.isNotNull(key)){
+                    <#if relateTable.many>
+                    response.${setRelatedPropertyList}(${NameUtils.getFieldName(relateRepositoryClassName)}.queryList(key, ${lambdaClassName}.${relatetargetLambda},
+                                    LoadFiltersUtils.getEntityFilters(request.getLoadFlag().getFilters(),"${relateName}")));
+                    <#else>
+                    response.${setRelatedProperty}(${NameUtils.getFieldName(relateRepositoryClassName)}.query(key, ${lambdaClassName}.${relatetargetLambda}));
+                    </#if>
+                }
             }
             </#list>
         }
@@ -228,6 +244,18 @@ public class ${serviceImplClassName} extends BaseDomainServiceImpl implements ${
         return (${source.mainTable.keyType}) ${lambdaClassName}.dtoKeyLambda.apply(domain);
     }
 
+      @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean update(${domainName}UpdateDomain request){
+<#if (source.relatedTable?size>0)>
+        Serializable keyId = ${lambdaClassName}.dtoKeyLambda.apply(request);
+        ${dtoClassName} old = find(new ${NameUtils.getName(source.name)}FindDomain(keyId, request.getLoadFlag())<#if source.aggregate??>,true</#if>);
+        return update(request,old);
+<#else>
+        return update(request,null);
+</#if>
+    }
+
     /**
     * 修改
     * @param request 请求体
@@ -235,10 +263,10 @@ public class ${serviceImplClassName} extends BaseDomainServiceImpl implements ${
     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean update(${domainName}UpdateDomain request){
+    public Boolean update(${domainName}UpdateDomain request, ${dtoClassName} domain){
 <#if (source.relatedTable?size>0)>
         Serializable keyId = ${lambdaClassName}.dtoKeyLambda.apply(request);
-        ${dtoClassName} old = find(new ${NameUtils.getName(source.name)}FindDomain(keyId, request.getLoadFlag())<#if source.aggregate??>,true</#if>);
+        ${dtoClassName} old = find(new ${NameUtils.getName(source.name)}FindDomain(keyId, request.getLoadFlag()), domain<#if source.aggregate??>,true</#if>);
 </#if>
 <#list source.relatedTable as relateTable>
     <#assign relateRepositoryClassName=NameUtils.repositoryName(relateTable.name)/>

@@ -39,6 +39,11 @@ public class ${repositoryImplClassName} extends BaseRepositoryImpl<${dtoClassNam
     }
 
     @Override
+    public void convert2DTO(${doClassName} item ,${dtoClassName} targetItem){
+        ${covertName}.INSTANCE.convert2DTO(item,targetItem);
+    }
+
+    @Override
     public SFunction<${dtoClassName}, Serializable> keyLambda() {
         return ${lambdaClassName}.dtoKeyLambda;
     }

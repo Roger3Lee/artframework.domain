@@ -10,7 +10,6 @@ import com.artframework.domain.meta.table.TableMetaInfo;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -96,7 +95,7 @@ public class GenerateUtils {
             generator.putParam(packageParam);
             TableInfo tableMetaInfo = TableInfo.covert(table);
             generator.setTemplateFilePath(FTLConstants.TABLE_DO_PATH);
-            FileUtils.saveFile(doPath, NameUtils.dataObjectName(tableMetaInfo.getName()) + ".java", generator.generate(tableMetaInfo));
+            FileUtils.saveFile(doPath, NameUtils.dataObjectName(tableMetaInfo.getName()) + ".java", generator.generate(tableMetaInfo), false);
             if (!tableMetaInfo.getBasic()) {
                 generator.setTemplateFilePath(FTLConstants.TABLE_MAPPER_PATH);
                 FileUtils.saveFile(daoPath, NameUtils.mapperName(tableMetaInfo.getName()) + ".java", generator.generate(tableMetaInfo), false);

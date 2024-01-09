@@ -27,13 +27,22 @@ public interface ${serviceClassName} extends BaseDomainService {
     */
     ${dtoClassName} find(${domainName}FindDomain request);
 
+    /**
+    * 查找
+    * @param request 请求体
+    * @param domain 源domain,如果此參數不為空則直接使用此參數作為主實體
+    * @return
+    */
+    ${dtoClassName} find(${domainName}FindDomain request, ${dtoClassName} domain);
+
     <#if source.aggregate??>
     /**
      * 查找
      * @param request 请求体
+     * @param domain 源domain,如果此參數不為空則直接使用此參數作為主實體
      * @return
      */
-    ${dtoClassName} find(${domainName}FindDomain request, Boolean loadAggregate);
+    ${dtoClassName} find(${domainName}FindDomain request, ${dtoClassName} domain, Boolean loadAggregate);
     </#if>
 
     /**
@@ -49,6 +58,14 @@ public interface ${serviceClassName} extends BaseDomainService {
     * @return 成功OR失败
     */
     Boolean update(${domainName}UpdateDomain request);
+
+    /**
+    * 修改,此方法不用再加載domain主entity數據
+    * @param request 请求体
+    * @param domain 原始domain
+    * @return 成功OR失败
+    */
+    Boolean update(${domainName}UpdateDomain request, ${dtoClassName} domain);
 
     /**
     * 删除

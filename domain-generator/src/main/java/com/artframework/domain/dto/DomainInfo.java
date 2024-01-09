@@ -67,6 +67,7 @@ public class DomainInfo {
             }
             RelateTableInfo tableInfo = new RelateTableInfo();
             tableInfo.setImplement(relatedTableMetaInfo.getImplement());
+            tableInfo.setDeletable(relatedTableMetaInfo.getDeletable());
             tableInfo.setName(relatedTableMetaInfo.getTable());
             tableInfo.setColumn(GlobalSetting.INSTANCE.getTableColumns(relatedTableMetaInfo.getTable()));
             ColumnMetaInfo keyColumn = tableInfo.getColumn().stream().filter(ColumnMetaInfo::getKey).findFirst().orElse(null);
@@ -96,6 +97,7 @@ public class DomainInfo {
     public static class TableInfo {
         private String name;
         private String implement;
+        private Boolean deletable;
         private List<ColumnMetaInfo> column;
         private String keyType;
         private String keyColName;

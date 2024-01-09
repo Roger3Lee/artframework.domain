@@ -21,8 +21,7 @@ import io.swagger.annotations.ApiModelProperty;
 @ToString
 @ApiModel(value = "${source.description}")
 <#assign className=NameUtils.dataTOName(source.name)/>
-<#assign relateDtoClassName=NameUtils.dataTOName(relateTable.name)/>
-public class ${className} extends BaseDomain {
+public class ${className} extends BaseDomain<#if (source.implement??) && (source.implement!='')> implements ${source.implement}</#if> {
 <#if source.mainTable??>
     <#list source.mainTable.column as column>
     /**
@@ -72,7 +71,7 @@ public class ${className} extends BaseDomain {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class ${relateClassName} extends BaseDomain{
+    public static class ${relateClassName} extends BaseDomain<#if (relateTable.implement??) && (relateTable.implement!='')> implements ${relateTable.implement}</#if>{
     <#list relateTable.column as column>
         /**
         * ${column.comment}
@@ -92,7 +91,7 @@ public class ${className} extends BaseDomain {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class ${relateClassName} extends BaseDomain{
+    public static class ${relateClassName} extends BaseDomain<#if (source.aggregate.implement??) && (source.aggregate.implement!='')> implements ${source.aggregate.implement}</#if>{
     <#list source.aggregate.column as column>
         /**
         * ${column.comment}

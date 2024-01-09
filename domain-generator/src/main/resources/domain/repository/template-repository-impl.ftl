@@ -56,7 +56,7 @@ public class ${repositoryImplClassName} extends BaseRepositoryImpl<${dtoClassNam
     @Override
     public IPage<${dtoClassName}> page(${domainName}PageDomain request){
         IPage<${doClassName}> page=new Page<>(request.getPageNum(), request.getPageSize());
-        LambdaQueryWrapper<${doClassName}> wrapper =new LambdaQueryWrapper<${doClassName}>();
+        LambdaQueryWrapper<${doClassName}> wrapper =new LambdaQueryWrapper<>();
         return this.baseMapper.selectPage(page,wrapper).convert(${covertName}.INSTANCE::convert2DTO);
     }
 }

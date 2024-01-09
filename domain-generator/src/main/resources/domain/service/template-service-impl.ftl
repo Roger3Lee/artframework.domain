@@ -343,9 +343,11 @@ public class ${serviceImplClassName} extends BaseDomainServiceImpl implements ${
 <#assign relatesourceLambda=NameUtils.fieldSourceLambda(relateFieldName)/>
 <#assign relatefieldTargetDomainLambda=NameUtils.fieldTargetDomainLambda(relateFieldName)/>
 <#assign getterList=NameUtils.genListGetter(relateTable.name)/>
+<#if relateTable.deletable>
         //删除关联数据${relateTable.name}
         ${NameUtils.getFieldName(relateRepositoryClassName)}.deleteByFilter(ListUtil.toList(FiltersUtils.build(${lambdaClassName}.${relatefieldTargetDomainLambda},
                ${lambdaClassName}.${relatesourceLambda}.apply(old))));
+</#if>
 </#list>
 <#if source.aggregate??>
 <#assign relateRepositoryClassName=NameUtils.repositoryName(source.aggregate.name)/>
@@ -353,9 +355,11 @@ public class ${serviceImplClassName} extends BaseDomainServiceImpl implements ${
 <#assign relateFieldName=NameUtils.getFieldName(source.aggregate.name)/>
 <#assign relatesourceLambda=NameUtils.fieldSourceLambda(relateFieldName)/>
 <#assign relatefieldTargetDomainLambda=NameUtils.fieldTargetDomainLambda(relateFieldName)/>
+<#if source.aggregate.deletable>
         //删除聚合數據
         ${NameUtils.getFieldName(relateRepositoryClassName)}.deleteByFilter(ListUtil.toList(FiltersUtils.build(${lambdaClassName}.${relatefieldTargetDomainLambda},
                ${lambdaClassName}.${relatesourceLambda}.apply(old))));
+</#if>
 </#if>
         return ${repositoryName}.delete(CollUtil.newArrayList(old)) > 0;
 <#else>

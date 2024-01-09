@@ -1,5 +1,6 @@
 package com.artframework.domain.generator;
 
+import com.artframework.domain.constants.BaseEntityConstants;
 import com.artframework.domain.utils.FreeMakerTplUtil;
 import com.artframework.domain.utils.StreamUtils;
 import lombok.Setter;

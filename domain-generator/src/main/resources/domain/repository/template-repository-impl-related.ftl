@@ -5,7 +5,7 @@ import ${domainPackage!''}.${NameUtils.packageName(source.folder)}.lambdaexp.*;
 import ${domainPackage!''}.${NameUtils.packageName(source.folder)}.domain.*;
 import ${domainPackage!''}.${NameUtils.packageName(source.folder)}.repository.*;
 import ${tablePackage!''}.*;
-import mo.gov.dsaj.domain.core.repository.impl.*;
+import ${corePackage}.repository.impl.*;
 
 import org.springframework.stereotype.Repository;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;

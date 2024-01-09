@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import mo.gov.dsaj.parent.core.mybatis.dataobject.*;
 
 /**
 * ${source.name}
@@ -22,7 +21,7 @@ import mo.gov.dsaj.parent.core.mybatis.dataobject.*;
 @KeySequence("seq_${source.name}_id")
 </#if>
 <#assign className=NameUtils.dataObjectName(source.name)/>
-public class ${className} <#if source.inheritBaseEntity>extends BaseEntityDO<#else><#if source.inherit??> extends ${NameUtils.dataObjectName(source.inherit)}</#if> implements ContainsId</#if> {
+public class ${className} <#if source.inheritBaseEntity>extends ${source.baseEntity}<#else><#if source.inherit??> extends ${NameUtils.dataObjectName(source.inherit)}</#if></#if> {
 
 <#--<#if !source.basic>-->
 <#--    /**-->

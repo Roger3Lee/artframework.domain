@@ -30,6 +30,8 @@ public abstract class AbstractGenerator {
             String template = StreamUtils.readAsString(inputStream);
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("basePackage",this.basePackage);
+            paramMap.put("corePackage", BaseEntityConstants.DOMAIN_CORE_PACKAGE);
+            paramMap.put("baseMapperClass",BaseEntityConstants.BASE_MAPPER);
             paramMap.putAll(params);
             paramMap.put("source", buildParam(source));
             return FreeMakerTplUtil.process(template, paramMap);

@@ -6,11 +6,11 @@ import ${domainPackage!''}.${NameUtils.packageName(source.folder)}.convertor.*;
 import ${domainPackage!''}.${NameUtils.packageName(source.folder)}.service.*;
 import ${domainPackage!''}.${NameUtils.packageName(source.folder)}.domain.*;
 import ${domainPackage!''}.${NameUtils.packageName(source.folder)}.repository.*;
-import mo.gov.dsaj.domain.core.service.impl.*;
-import mo.gov.dsaj.domain.core.uitls.*;
+import ${corePackage}.service.impl.*;
+import ${corePackage}.uitls.*;
 
-import mo.gov.dsaj.domain.core.domain.*;
-import mo.gov.dsaj.domain.core.repository.BaseRepository;
+import ${corePackage}.domain.*;
+import ${corePackage}.repository.BaseRepository;
 import cn.hutool.core.collection.*;
 import cn.hutool.core.util.*;
 import com.baomidou.mybatisplus.core.metadata.IPage;

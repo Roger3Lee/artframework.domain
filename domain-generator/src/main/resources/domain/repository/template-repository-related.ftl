@@ -2,7 +2,7 @@ package ${domainPackage!''}.${NameUtils.packageName(source.folder)}.repository;
 
 import ${domainPackage!''}.${NameUtils.packageName(source.folder)}.domain.*;
 import ${tablePackage!''}.*;
-import mo.gov.dsaj.domain.core.repository.*;
+import ${corePackage}.repository.*;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
 <#assign dtoClassName=NameUtils.dataTOName(source.name)/>

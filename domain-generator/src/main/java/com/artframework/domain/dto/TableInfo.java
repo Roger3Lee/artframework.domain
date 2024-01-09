@@ -17,6 +17,7 @@ public class TableInfo {
     private Boolean basic = false;
     private String inherit;
     private Boolean inheritBaseEntity;
+    private String baseEntity;
     private Boolean keyGenerator = true;
     private List<ColumnMetaInfo> column;
 
@@ -32,6 +33,7 @@ public class TableInfo {
         tableInfo.inheritBaseEntity = new HashSet<>(tableInfo.getColumn().stream().map(ColumnMetaInfo::getName)
                 .collect(Collectors.toList())).containsAll(BaseEntityConstants.FIELDS);
         if (tableInfo.inheritBaseEntity) {
+            tableInfo.baseEntity=BaseEntityConstants.BASE_ENTITY;
             tableInfo.column.forEach(x -> {
                 if (BaseEntityConstants.FIELDS.contains(x.getName())) {
                     x.setInherit(true);
